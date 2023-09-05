@@ -1,0 +1,272 @@
+<main class="site__content" id="users">
+
+  <div class="messages" ng-controller="MessagesController">
+
+    <div class="messages__column messages__column_1">
+
+      <div ng-repeat="msg in errorArr" class="messages__error">{{msg[1]}}</div>
+
+    </div><!-- /messages__column -->
+
+    <div class="messages__column messages__column_2">
+
+      <div ng-repeat="msg in successArr" class="messages__success">{{msg[1]}}</div>
+
+    </div><!-- /messages__column -->
+
+  </div><!-- /messages -->
+
+  <div class="add-user">
+
+    <div class="add-user__wrap">
+
+      <button type="button" class="btn" ng-click="showNewUserFormFn()">Create User</button>
+
+    </div><!-- /add-user__wrap -->
+
+  </div><!-- /add-user -->
+
+  <div class="users">
+
+    <div class="users__column users__column_1">
+
+      <div class="nice-table">
+
+        <table class="nice-table__wrap">
+
+          <thead class="nice-table__thead">
+            <tr>
+              <th>Username</th>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Email</th>
+              <th>Type</th>
+            </tr>
+          </thead><!-- /nice-table__thead -->
+
+          <tbody class="nice-table__tbody">
+            <tr ng-repeat="user in users" ng-click="showEditForm(user)">
+              <td data-label="Username">{{user.username}}</td>
+              <td data-label="First name">{{user.first_name}}</td>
+              <td data-label="Last name">{{user.last_name}}</td>
+              <td data-label="Email">{{user.email}}</td>
+              <td data-label="Type">{{user.user_type}}</td>
+            </tr>
+          </tbody><!-- /nice-table__tbody -->
+
+        </table><!-- /nice-table__wrap -->
+
+      </div><!-- /nice-table -->
+
+    </div><!-- /users__column -->
+
+    <div class="users__column users__column_2" ng-controller="FormController" ng-if="showNewUserForm">
+
+      <form class="nice-form" name="form" novalidate ng-submit="addNewUser(user)">
+
+        <div class="nice-form__head">
+
+          <div class="nice-form__title">Create new user</div><!-- /nice-form__title -->
+
+          <button type="button" class="nice-form__close" ng-click="hideNewUserFormFn()"></button><!-- /nice-form__close -->
+
+        </div><!-- /nice-form__head -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="username">Username*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.username" type="text" id="username" name="username" class="nice-form__field" required unique-name-directive>
+
+          <div class="nice-form__error" ng-show="form.username.$dirty && form.username.$invalid">
+            <div ng-show="form.username.$error.required">Username is required.</div>
+            <div ng-show="form.username.$error.uniqueName">Username must be unique.</div>
+          </div>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="name">First name*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.first_name" type="text" id="name" name="name" class="nice-form__field" required>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="surname">Last name*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.last_name" type="text" id="surname" name="surname" class="nice-form__field" required>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row nice-form__row_email">
+
+          <label class="nice-form__label" for="email">Email*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.email" type="email" id="email" name="email" class="nice-form__field" required>
+
+          <div class="nice-form__error" ng-show="form.email.$dirty && form.email.$invalid">
+            <div ng-show="form.email.$error.required">Email is required.</div>
+            <div ng-show="form.email.$error.email">Email is invalid.</div>
+          </div>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="type">Type*</label><!-- /nice-form__label -->
+
+          <select ng-model="user.user_type" name="type" id="type" class="nice-form__field" required>
+            <option value="0" disabled selected>Choose a type</option>
+            <option value="admin">Admin</option>
+            <option value="driver">Driver</option>
+          </select>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="password">Password*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.password" type="password" id="password" ng-minlength="8" name="password" class="nice-form__field" password-symbols-directive required>
+
+          <div class="nice-form__error" ng-show="form.password.$dirty && form.password.$invalid">
+            <div ng-show="form.password.$error.required">Password is required.</div>
+            <div ng-show="form.password.$error.minlength">Min length of password - 8.</div>
+            <div ng-show="form.password.$error.symbols">Must be at least one number and one letter.</div>
+          </div>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="password2">Repeat password*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.password2" type="password" id="password2" name="password2" class="nice-form__field" match-password-directive required>
+
+          <div class="nice-form__error" ng-show="form.password2.$dirty && form.password2.$invalid">
+            <div ng-show="form.password2.$error.required">Password repetition is required.</div>
+            <div ng-show="form.password2.$error.repeatPassword">Password repetition does not match.</div>
+          </div>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row nice-form__row_submit">
+
+          <button type="submit" class="btn" ng-disabled="form.$invalid">Create</button>
+
+        </div><!-- /nice-form__row -->
+
+      </form><!-- /nice-form -->
+
+    </div><!-- /users__column -->
+
+    <div class="users__column users__column_2" ng-controller="EditFormController" ng-if="showEditUserForm">
+
+      <form class="nice-form" name="editForm" novalidate ng-submit="editUser(user)">
+
+        <div class="nice-form__head">
+
+          <div class="nice-form__title">{{user.first_name}} {{user.last_name}}</div><!-- /nice-form__title -->
+
+          <button type="button" class="nice-form__close" ng-click="hideEditUserFormFn()"></button><!-- /nice-form__close -->
+
+        </div><!-- /nice-form__head -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="usernameEdit">Username*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.username" type="text" id="usernameEdit" name="usernameEdit" class="nice-form__field" ng-readonly="true" required unique-name-directive>
+
+          <div class="nice-form__error" ng-show="editForm.username.$dirty && editForm.username.$invalid">
+            <div ng-show="editForm.usernameEdit.$error.required">Username is required.</div>
+            <div ng-show="editForm.usernameEdit.$error.uniqueName">Username must be unique.</div>
+          </div>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="nameEdit">First name*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.first_name" type="text" id="nameEdit" name="name" class="nice-form__field" required>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="surnameEdit">Last name*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.last_name" type="text" id="surnameEdit" name="surname" class="nice-form__field" required>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row nice-form__row_email">
+
+          <label class="nice-form__label" for="emailEdit">Email*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.email" type="email" id="emailEdit" name="email" class="nice-form__field" required>
+
+          <div class="nice-form__error" ng-show="editForm.email.$dirty && editForm.email.$invalid">
+            <div ng-show="editForm.email.$error.required">Email is required.</div>
+            <div ng-show="editForm.email.$error.email">Email is invalid.</div>
+          </div>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="typeEdit">Type*</label><!-- /nice-form__label -->
+
+          <select ng-model="user.user_type" name="type" id="typeEdit" class="nice-form__field" required>
+            <option value="0" disabled selected>Choose a type</option>
+            <option value="admin">Admin</option>
+            <option value="driver">Driver</option>
+          </select>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="passwordEdit">Password*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.password" type="password" id="passwordEdit" name="password" ng-minlength="8" class="nice-form__field" password-symbols-directive required>
+
+          <div class="nice-form__error" ng-show="editForm.password.$dirty && editForm.password.$invalid">
+            <div ng-show="editForm.password.$error.required">Password is required.</div>
+            <div ng-show="editForm.password.$error.minlength">Min length of password - 8.</div>
+            <div ng-show="editForm.password.$error.symbols">Must be at least one number and one letter.</div>
+          </div>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row">
+
+          <label class="nice-form__label" for="password2Edit">Repeat password*</label><!-- /nice-form__label -->
+
+          <input ng-model="user.password2Edit" type="password" id="password2Edit" name="password2Edit" class="nice-form__field" match-edit-password-directive required>
+
+          <div class="nice-form__error" ng-show="editForm.password2Edit.$dirty && editForm.password2Edit.$invalid">
+            <div ng-show="editForm.password2Edit.$error.required">Password repetition is required.</div>
+            <div ng-show="editForm.password2Edit.$error.repeatPassword">Password repetition does not match.</div>
+          </div>
+
+        </div><!-- /nice-form__row -->
+
+        <div class="nice-form__row nice-form__row_sb nice-form__row_submit">
+
+          <button type="button" ng-click="deleteUser(user)" class="btn btn_2" ng-disabled="editForm.$invalid">Delete</button>
+          <button type="submit" class="btn" ng-disabled="editForm.$invalid">Save</button>
+
+        </div><!-- /nice-form__row -->
+
+      </form><!-- /nice-form -->
+
+    </div><!-- /users__column -->
+
+  </div><!-- /users -->
+
+</main>
